@@ -1,2012 +1,1855 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"title": "Personalizer Client",
-		"description": "Personalizer Service is an Azure Cognitive Service that makes it easy to target content and experiences without complex pre-analysis or cleanup of past data. Given a context and featurized content, the Personalizer Service returns which content item to show to users in rewardActionId. As rewards are sent in response to the use of rewardActionId, the reinforcement learning algorithm will improve the model and improve performance of future rank calls.",
-		"version": "v1.0"
-	},
-	"host": "localhost:5001",
-	"basePath": "/personalizer/v1.0",
-	"schemes": [
-		"https"
-	],
-	"paths": {
-		"/configurations/service": {
-			"put": {
-				"tags": [
-					"Configurations"
-				],
-				"summary": "Update Service Configuration.",
-				"description": "Update the Personalizer service configuration.",
-				"operationId": "ServiceConfiguration_Update",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "body",
-						"name": "body",
-						"description": "The personalizer service configuration.",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ServiceConfiguration"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/ServiceConfiguration"
-						},
-						"examples": {
-							"application/json": {
-								"rewardWaitTime": "PT10M",
-								"defaultReward": 0.0,
-								"rewardAggregation": "earliest",
-								"explorationPercentage": 0.2,
-								"modelExportFrequency": "PT5M",
-								"logMirrorEnabled": true,
-								"logMirrorSasUri": "https://testblob.blob.core.windows.net/container?se=2020-08-13T00%3A00Z&sp=rwl&spr=https&sv=2018-11-09&sr=c&sig=signature",
-								"logRetentionDays": 7,
-								"modelAutoPublish": true,
-								"stagedModelHistoryLength": 10,
-								"lastConfigurationEditDate": "0001-01-01T00:00:00",
-								"learningMode": "Online"
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid service configuration.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			},
-			"get": {
-				"tags": [
-					"Configurations"
-				],
-				"summary": "Get Service Configuration.",
-				"description": "Get the Personalizer service configuration.",
-				"operationId": "ServiceConfiguration_Get",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/ServiceConfiguration"
-						},
-						"examples": {
-							"application/json": {
-								"rewardWaitTime": "PT10M",
-								"defaultReward": 0.0,
-								"rewardAggregation": "earliest",
-								"explorationPercentage": 0.2,
-								"modelExportFrequency": "PT5M",
-								"logMirrorEnabled": true,
-								"logMirrorSasUri": "https://testblob.blob.core.windows.net/container?se=2020-08-13T00%3A00Z&sp=rwl&spr=https&sv=2018-11-09&sr=c&sig=signature",
-								"logRetentionDays": 7,
-								"modelAutoPublish": true,
-								"stagedModelHistoryLength": 10,
-								"lastConfigurationEditDate": "0001-01-01T00:00:00",
-								"learningMode": "Online"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/configurations/policy": {
-			"get": {
-				"tags": [
-					"Configurations"
-				],
-				"summary": "Get Policy.",
-				"description": "Get the learning settings currently used by the Personalizer service.",
-				"operationId": "Policy_Get",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/PolicyContract"
-						},
-						"examples": {
-							"application/json": {
-								"name": "myPersonalizer",
-								"arguments": "--cb_explore_adf --epsilon 0.2 --dsjson --cb_type ips -l 0.5 --l1 1E-07 --power_t 0.5"
-							}
-						}
-					}
-				}
-			},
-			"put": {
-				"tags": [
-					"Configurations"
-				],
-				"summary": "Update Policy.",
-				"description": "Update the learning settings that the Personalizer service will use to train models.",
-				"operationId": "Policy_Update",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "body",
-						"name": "body",
-						"description": "The learning settings.",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/PolicyContract"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/PolicyContract"
-						},
-						"examples": {
-							"application/json": {
-								"name": "myPersonalizer",
-								"arguments": "--cb_explore_adf --epsilon 0.2 --dsjson --cb_type ips -l 0.5 --l1 1E-07 --power_t 0.5"
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid policy configuration.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			},
-			"delete": {
-				"tags": [
-					"Configurations"
-				],
-				"summary": "Reset Policy.",
-				"description": "Resets the learning settings of the Personalizer service to default.",
-				"operationId": "Policy_Reset",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/PolicyContract"
-						},
-						"examples": {
-							"application/json": {
-								"name": "myPersonalizer",
-								"arguments": "--cb_explore_adf --epsilon 0.2 --dsjson --cb_type ips -l 0.5 --l1 1E-07 --power_t 0.5"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/evaluations/{evaluationId}": {
-			"delete": {
-				"tags": [
-					"Evaluations"
-				],
-				"summary": "Delete Evaluation.",
-				"description": "Delete the evaluation associated with the Id.",
-				"operationId": "Evaluations_Delete",
-				"parameters": [
-					{
-						"in": "path",
-						"name": "evaluationId",
-						"description": "Id of the evaluation to delete.",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					}
-				}
-			},
-			"get": {
-				"tags": [
-					"Evaluations"
-				],
-				"summary": "Get Evaluation.",
-				"description": "Get the evaluation associated with the Id.",
-				"operationId": "Evaluations_Get",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "evaluationId",
-						"description": "Id of the evaluation.",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"404": {
-						"description": "Evaluation not found.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/Evaluation"
-						},
-						"examples": {
-							"application/json": {
-								"id": "b58c6d92-b727-48c1-9487-4be2782c9e0a",
-								"name": "myFirstEvaluation",
-								"startTime": "2018-12-19T00:00:00Z",
-								"endTime": "2019-01-19T00:00:00Z",
-								"status": "completed",
-								"policyResults": [
-									{
-										"name": "Custom learning settings 1",
-										"arguments": "--cb_explore_adf --epsilon 0.2 --dsjson --cb_type ips -l 0.5 --l1 1E-07 --power_t 0.5",
-										"summary": [
-											{
-												"timeStamp": "2018-12-19T00:00:00Z",
-												"ipsEstimatorNumerator": 0.0,
-												"ipsEstimatorDenominator": 170.0,
-												"snipsEstimatorDenominator": 308.25,
-												"aggregateTimeWindow": "PT0S",
-												"nonZeroProbability": 64.0,
-												"confidenceInterval": 0.0,
-												"sumOfSquares": 0.0
-											},
-											{
-												"timeStamp": "2018-12-19T00:05:00Z",
-												"ipsEstimatorNumerator": 2.2,
-												"ipsEstimatorDenominator": 196.0,
-												"snipsEstimatorDenominator": 193.761,
-												"aggregateTimeWindow": "PT0S",
-												"nonZeroProbability": 68.0,
-												"confidenceInterval": 1.1009,
-												"sumOfSquares": 2.424
-											}
-										],
-										"totalSummary": {
-											"timeStamp": "2019-01-19T00:00:00Z",
-											"ipsEstimatorNumerator": 22.2,
-											"ipsEstimatorDenominator": 1906.0,
-											"snipsEstimatorDenominator": 1993.761,
-											"aggregateTimeWindow": "PT0S",
-											"nonZeroProbability": 68.0,
-											"confidenceInterval": 1.1209,
-											"sumOfSquares": 2.484
-										}
-									}
-								],
-								"featureImportance": [
-									[
-										"f1",
-										"f2"
-									],
-									[
-										"f3",
-										"f4"
-									]
-								]
-							}
-						}
-					}
-				}
-			}
-		},
-		"/evaluations": {
-			"get": {
-				"tags": [
-					"Evaluations"
-				],
-				"summary": "List Evaluations.",
-				"description": "List all the submitted evaluations.",
-				"operationId": "Evaluations_List",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/Evaluation"
-							}
-						},
-						"examples": {
-							"application/json": [
-								{
-									"id": "b58c6d92-b727-48c1-9487-4be2782c9e0a",
-									"name": "myFirstEvaluation",
-									"startTime": "2018-11-19T00:00:00Z",
-									"endTime": "2018-12-19T00:00:00Z",
-									"status": "pending",
-									"policyResults": [
-										{
-											"name": "Custom learning settings 1",
-											"arguments": "--cb_explore_adf --epsilon 0.2 --dsjson --cb_type ips -l 0.5 --l1 1E-07 --power_t 0.5"
-										}
-									],
-									"featureImportance": []
-								},
-								{
-									"id": "21d03972-9130-4be9-8c8b-8ac3ec9b9dd1",
-									"name": "mySecondEvaluation",
-									"startTime": "2018-12-19T00:00:00Z",
-									"endTime": "2019-01-19T00:00:00Z",
-									"status": "pending",
-									"policyResults": [],
-									"featureImportance": []
-								}
-							]
-						}
-					}
-				}
-			},
-			"post": {
-				"tags": [
-					"Evaluations"
-				],
-				"summary": "Create Evaluation.",
-				"description": "Submit a new evaluation job.",
-				"operationId": "Evaluations_Create",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "body",
-						"name": "body",
-						"description": "The evaluation job definition.",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/EvaluationContract"
-						}
-					}
-				],
-				"responses": {
-					"400": {
-						"description": "Invalid evaluation contract.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					},
-					"201": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/Evaluation"
-						},
-						"examples": {
-							"application/json": {
-								"id": "b58c6d92-b727-48c1-9487-4be2782c9e0a",
-								"name": "myFirstEvaluation",
-								"startTime": "2018-12-19T00:00:00Z",
-								"endTime": "2019-01-19T00:00:00Z",
-								"status": "pending",
-								"policyResults": [
-									{
-										"name": "Custom learning settings 1",
-										"arguments": "--cb_explore_adf --epsilon 0.2 --dsjson --cb_type ips -l 0.5 --l1 1E-07 --power_t 0.5"
-									}
-								],
-								"featureImportance": []
-							}
-						},
-						"headers": {
-							"Location": {
-								"description": "Location of the evaluation resource",
-								"type": "string"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/events/{eventId}/reward": {
-			"post": {
-				"tags": [
-					"Events"
-				],
-				"summary": "Post Reward.",
-				"description": "Report reward that resulted from using the action specified in rewardActionId for the specified event.",
-				"operationId": "Events_Reward",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "eventId",
-						"description": "The event id this reward applies to.",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "body",
-						"name": "body",
-						"description": "The reward should be a floating point number, typically between 0 and 1.",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/RewardRequest"
-						}
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					},
-					"400": {
-						"description": "Invalid reward request.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"/events/{eventId}/activate": {
-			"post": {
-				"tags": [
-					"Events"
-				],
-				"summary": "Activate Event.",
-				"description": "Report that the specified event was actually displayed to the user and a reward should be expected for it",
-				"operationId": "Events_Activate",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "eventId",
-						"description": "The event ID this activation applies to.",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					},
-					"400": {
-						"description": "Invalid activate event request.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"/logs": {
-			"delete": {
-				"tags": [
-					"Logs"
-				],
-				"summary": "Deletes Logs.",
-				"description": "Delete all generated logs.",
-				"operationId": "Log_Delete",
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					}
-				}
-			}
-		},
-		"/logs/properties": {
-			"get": {
-				"tags": [
-					"Logs"
-				],
-				"summary": "Get Log Properties.",
-				"description": "Get properties of generated logs.",
-				"operationId": "Log_GetProperties",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/LogsProperties"
-						},
-						"examples": {
-							"application/json": {
-								"dateRange": {
-									"from": "2019-01-19T00:00:00+00:00",
-									"to": "2019-02-19T00:00:00+00:00"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Logs properties not found.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"/metrics/apprentice": {
-			"get": {
-				"tags": [
-					"Metrics"
-				],
-				"summary": "Get apprentice mode metrics.",
-				"description": "Get performance metrics for apprentice learning mode.",
-				"operationId": "ApprenticeModeMetrics_Get",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/ApprenticeModeMetrics"
-						},
-						"examples": {
-							"application/json": {
-								"startTime": "2020-01-01T00:00:00",
-								"lastProcessedEventTime": "2020-01-01T00:00:00",
-								"lastBatchMetrics": {
-									"numberOfEvents": 0,
-									"sumOfRewards": 0.0,
-									"numberOfImitatedEvents": 0,
-									"sumOfImitatedRewards": 0.0
-								},
-								"numberOfEvents": 4,
-								"sumOfRewards": 2.0,
-								"numberOfImitatedEvents": 2,
-								"sumOfImitatedRewards": 1.0
-							}
-						}
-					}
-				}
-			}
-		},
-		"/model": {
-			"get": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Get Model.",
-				"description": "Get the model file generated by Personalizer service.",
-				"operationId": "Model_Get",
-				"produces": [
-					"application/octet-stream"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": null,
-						"schema": {
-							"type": "file"
-						}
-					}
-				}
-			},
-			"delete": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Reset Model.",
-				"description": "Resets the model file generated by Personalizer service.",
-				"operationId": "Model_Reset",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					},
-					"400": {
-						"description": "Model reset failed.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"/model/properties": {
-			"get": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Get Model Properties.",
-				"description": "Get properties of the model file generated by Personalizer service.",
-				"operationId": "Model_GetProperties",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/ModelProperties"
-						},
-						"examples": {
-							"application/json": {
-								"creationTime": "2019-01-19T00:00:00+00:00",
-								"lastModifiedTime": "2019-01-19T00:00:00+00:00"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/staged-model": {
-			"get": {
-				"tags": [
-					"Model"
-				],
-				"summary": "List Staged Models",
-				"description": "List staged models generated by Personalizer service.",
-				"operationId": "StagedModel_List",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/definitions/ModelMetadata"
-							}
-						},
-						"examples": {
-							"application/json": [
-								{
-									"modelId": "03613e64-5f89-4b34-af86-a479ce4d8708",
-									"userDescription": "",
-									"creationDate": "2019-01-19T00:05:00Z",
-									"lastConfigEditDate": "2019-01-19T00:00:00Z",
-									"firstEventId": "a44d0de9-08e3-434c-8543-fb6cfaa62623",
-									"lastEventId": "98b39edd-a1e0-499f-a1a9-ae5d151b9458",
-									"savedInHistory": false,
-									"numberOfEventsLearnedSinceLastExport": 32778
-								},
-								{
-									"modelId": "1359d6dc-d06e-4d0e-aa0e-0930ee178881",
-									"userDescription": "a_model_description",
-									"creationDate": "2019-01-19T00:10:00Z",
-									"lastConfigEditDate": "2019-01-19T00:00:00Z",
-									"firstEventId": "9c51f5f7-de80-4e55-86c9-5c6bc7827589",
-									"lastEventId": "c154d20f-ecf4-4dce-b7fa-99767f30101b",
-									"savedInHistory": true,
-									"numberOfEventsLearnedSinceLastExport": 30991
-								}
-							]
-						}
-					}
-				}
-			}
-		},
-		"/staged-model/{id}": {
-			"get": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Get Staged Model",
-				"description": "Get the staged model file generated by Personalizer service, given a model id.",
-				"operationId": "StagedModel_GetById",
-				"produces": [
-					"application/octet-stream"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": null,
-						"schema": {
-							"type": "file"
-						}
-					}
-				}
-			},
-			"delete": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Reset Staged Model",
-				"description": "Reset the staged model file generated by Personalizer service, given a model id.",
-				"operationId": "StagedModel_ResetById",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					},
-					"400": {
-						"description": "Model reset failed.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			},
-			"put": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Update Staged Model",
-				"description": "Update the metadata of a staged model, given a model id.\r\nOnly the boolean `savedInHistory` and the string `userDescription` can be updated. Other fields are readonly.",
-				"operationId": "StagedModel_UpdateMetadataById",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "body",
-						"name": "body",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/ModelMetadata"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/ModelMetadata"
-						},
-						"examples": {
-							"application/json": {
-								"modelId": "03613e64-5f89-4b34-af86-a479ce4d8708",
-								"userDescription": "a_model_description",
-								"creationDate": "2019-01-19T00:00:00Z",
-								"lastConfigEditDate": "2018-12-19T00:00:00Z",
-								"firstEventId": "a44d0de9-08e3-434c-8543-fb6cfaa62623",
-								"lastEventId": "98b39edd-a1e0-499f-a1a9-ae5d151b9458",
-								"savedInHistory": true,
-								"numberOfEventsLearnedSinceLastExport": 42778
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid model metadata.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"/staged-model/{id}/publish": {
-			"put": {
-				"tags": [
-					"Model"
-				],
-				"summary": "Publish Staged Model",
-				"description": "Publish the staged model file generated by Personalizer service, given a model id.",
-				"operationId": "StagedModel_Publish",
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"type": "string",
-						"maxLength": 256
-					},
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					}
-				],
-				"responses": {
-					"204": {
-						"description": "Success"
-					},
-					"400": {
-						"description": "Model publish failed.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		},
-		"/rank": {
-			"post": {
-				"tags": [
-					"Rank"
-				],
-				"summary": "Post Rank.",
-				"description": "Submit a Personalizer rank request, to get which of the provided actions should be used in the provided context.",
-				"operationId": "Rank",
-				"consumes": [
-					"application/json"
-				],
-				"produces": [
-					"application/json"
-				],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "Ocp-Apim-Subscription-Key",
-						"description": "apim-subscription-id header value",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "body",
-						"name": "body",
-						"description": "A Personalizer request.",
-						"required": true,
-						"schema": {
-							"$ref": "#/definitions/RankRequest"
-						}
-					}
-				],
-				"responses": {
-					"201": {
-						"description": "Success",
-						"schema": {
-							"$ref": "#/definitions/RankResponse"
-						},
-						"examples": {
-							"application/json": {
-								"ranking": [
-									{
-										"id": "EntertainmentArticle",
-										"probability": 0.8
-									},
-									{
-										"id": "SportsArticle",
-										"probability": 0.0
-									},
-									{
-										"id": "NewsArticle",
-										"probability": 0.2
-									}
-								],
-								"eventId": "75269AD0-BFEE-4598-8196-C57383D38E10",
-								"rewardActionId": "EntertainmentArticle"
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid rank request.",
-						"schema": {
-							"$ref": "#/definitions/ErrorResponse"
-						}
-					}
-				}
-			}
-		}
-	},
-	"definitions": {
-		"LearningMode": {
-			"enum": [
-				"Online",
-				"Apprentice",
-				"LoggingOnly"
-			],
-			"type": "string",
-			"x-ms-enum": {
-				"name": "LearningMode",
-				"modelAsString": true
-			}
-		},
-		"ApprenticeLearningMetrics": {
-			"required": [
-				"numberOfEvents",
-				"numberOfImitatedEvents",
-				"sumOfImitatedRewards",
-				"sumOfRewards"
-			],
-			"type": "object",
-			"properties": {
-				"numberOfEvents": {
-					"format": "int64",
-					"type": "integer"
-				},
-				"sumOfRewards": {
-					"format": "float",
-					"type": "number"
-				},
-				"numberOfImitatedEvents": {
-					"format": "int64",
-					"type": "integer"
-				},
-				"sumOfImitatedRewards": {
-					"format": "float",
-					"type": "number"
-				}
-			}
-		},
-		"ApprenticeModeMetrics": {
-			"required": [
-				"lastProcessedEventTime",
-				"numberOfEvents",
-				"numberOfImitatedEvents",
-				"startTime",
-				"sumOfImitatedRewards",
-				"sumOfRewards"
-			],
-			"type": "object",
-			"properties": {
-				"startTime": {
-					"format": "date-time",
-					"type": "string"
-				},
-				"lastProcessedEventTime": {
-					"format": "date-time",
-					"type": "string"
-				},
-				"lastBatchMetrics": {
-					"$ref": "#/definitions/ApprenticeLearningMetrics"
-				},
-				"numberOfEvents": {
-					"format": "int64",
-					"type": "integer"
-				},
-				"sumOfRewards": {
-					"format": "float",
-					"type": "number"
-				},
-				"numberOfImitatedEvents": {
-					"format": "int64",
-					"type": "integer"
-				},
-				"sumOfImitatedRewards": {
-					"format": "float",
-					"type": "number"
-				}
-			}
-		},
-		"ServiceConfiguration": {
-			"description": "The configuration of the service.",
-			"required": [
-				"defaultReward",
-				"explorationPercentage",
-				"logRetentionDays",
-				"modelExportFrequency",
-				"rewardAggregation",
-				"rewardWaitTime"
-			],
-			"type": "object",
-			"properties": {
-				"rewardWaitTime": {
-					"format": "duration",
-					"description": "The time span waited until a request is marked with the default reward.\r\nFor example, PT5M (5 mins). For information about the time format,\r\nsee http://en.wikipedia.org/wiki/ISO_8601#Durations",
-					"type": "string"
-				},
-				"defaultReward": {
-					"format": "float",
-					"description": "The reward given if a reward is not received within the specified wait time.",
-					"maximum": 1,
-					"minimum": -1,
-					"type": "number"
-				},
-				"rewardAggregation": {
-					"description": "The function used to process rewards, if multiple reward scores are received before rewardWaitTime is over.",
-					"maxLength": 256,
-					"type": "string"
-				},
-				"explorationPercentage": {
-					"format": "float",
-					"description": "The percentage of rank responses that will use exploration.",
-					"maximum": 1,
-					"minimum": 0,
-					"type": "number"
-				},
-				"modelExportFrequency": {
-					"format": "duration",
-					"description": "Personalizer will start using the most updated trained model for online ranks automatically every specified time period.\r\nFor example, PT5M (5 mins). For information about the time format,\r\nsee http://en.wikipedia.org/wiki/ISO_8601#Durations",
-					"type": "string"
-				},
-				"logMirrorEnabled": {
-					"description": "Flag indicates whether log mirroring is enabled.",
-					"type": "boolean"
-				},
-				"logMirrorSasUri": {
-					"description": "Azure storage account container SAS URI for log mirroring.",
-					"type": "string"
-				},
-				"logRetentionDays": {
-					"format": "int32",
-					"description": "Number of days historical logs are to be maintained. -1 implies the logs will never be deleted.",
-					"maximum": 2147483647,
-					"minimum": -1,
-					"type": "integer"
-				},
-				"modelAutoPublish": {
-					"description": "When auto-publish is enabled (= default), the trainer exports the model and override the \"current\" model.\r\nWhen auto-publish is disabled, the trainer exports models but does not override the \"current\" model (this is done by the user through API calls).",
-					"default": true,
-					"type": "boolean"
-				},
-				"stagedModelHistoryLength": {
-					"format": "int32",
-					"description": "Old models are automatically cleaned except the last N models",
-					"default": 10,
-					"type": "integer"
-				},
-				"lastConfigurationEditDate": {
-					"format": "date-time",
-					"description": "Last time model training configuration was updated",
-					"type": "string"
-				},
-				"learningMode": {
-					"$ref": "#/definitions/LearningMode"
-				},
-				"latestApprenticeModeMetrics": {
-					"$ref": "#/definitions/ApprenticeModeMetrics"
-				}
-			}
-		},
-		"PersonalizerErrorCode": {
-			"enum": [
-				"badRequest",
-				"invalidServiceConfiguration",
-				"invalidLearningModeServiceConfiguration",
-				"invalidPolicyConfiguration",
-				"invalidPolicyContract",
-				"invalidEvaluationContract",
-				"duplicateCustomPolicyNames",
-				"noLogsExistInDateRange",
-				"logsSizeExceedAllowedLimit",
-				"invalidRewardRequest",
-				"invalidEventIdToActivate",
-				"invalidRankRequest",
-				"invalidExportLogsRequest",
-				"invalidContainer",
-				"invalidModelMetadata",
-				"apprenticeModeNeverTurnedOn",
-				"missingAppId",
-				"modelFileAccessDenied",
-				"resourceNotFound",
-				"frontEndNotFound",
-				"evaluationNotFound",
-				"logsPropertiesNotFound",
-				"modelRankingError",
-				"internalServerError",
-				"rankNullResponse",
-				"updateConfigurationFailed",
-				"modelResetFailed",
-				"modelPublishFailed",
-				"modelMetadataUpdateFailed",
-				"keyVaultNotFound",
-				"none"
-			],
-			"type": "string",
-			"x-ms-enum": {
-				"name": "PersonalizerErrorCode",
-				"modelAsString": true,
-				"values": [
-					{
-						"value": "BadRequest",
-						"description": "Request could not be understood by the server."
-					},
-					{
-						"value": "InvalidServiceConfiguration",
-						"description": "Invalid service configuration."
-					},
-					{
-						"value": "InvalidLearningModeServiceConfiguration",
-						"description": "Updating defaultReward, rewardWaitTime and rewardAggregation when changing learning mode from Online to Apprentice mode and vice versa is not allowed."
-					},
-					{
-						"value": "InvalidPolicyConfiguration",
-						"description": "Invalid policy configuration."
-					},
-					{
-						"value": "InvalidPolicyContract",
-						"description": "Invalid policy contract."
-					},
-					{
-						"value": "InvalidEvaluationContract",
-						"description": "Invalid evaluation contract."
-					},
-					{
-						"value": "DuplicateCustomPolicyNames",
-						"description": "Custom policy names should be unique."
-					},
-					{
-						"value": "NoLogsExistInDateRange",
-						"description": "No logs exist in date range."
-					},
-					{
-						"value": "LogsSizeExceedAllowedLimit",
-						"description": "Total size of logs exceed allowed limit."
-					},
-					{
-						"value": "InvalidRewardRequest",
-						"description": "Invalid reward request."
-					},
-					{
-						"value": "InvalidEventIdToActivate",
-						"description": "Invalid activate event request."
-					},
-					{
-						"value": "InvalidRankRequest",
-						"description": "Invalid rank request."
-					},
-					{
-						"value": "InvalidExportLogsRequest",
-						"description": "Invalid export logs request."
-					},
-					{
-						"value": "InvalidContainer",
-						"description": "SAS Uri must be the Uri to a container that has write permissions."
-					},
-					{
-						"value": "InvalidModelMetadata",
-						"description": "Invalid model metadata."
-					},
-					{
-						"value": "ApprenticeModeNeverTurnedOn",
-						"description": "Apprentice mode never turned on."
-					},
-					{
-						"value": "MissingAppId",
-						"description": "AppId is missing in the header."
-					},
-					{
-						"value": "ModelFileAccessDenied",
-						"description": "Key vault Key used for customer managed key cannot be accessed."
-					},
-					{
-						"value": "ResourceNotFound",
-						"description": "Requested resource does not exist on the server."
-					},
-					{
-						"value": "FrontEndNotFound",
-						"description": "Front end not found."
-					},
-					{
-						"value": "EvaluationNotFound",
-						"description": "Evaluation not found."
-					},
-					{
-						"value": "LogsPropertiesNotFound",
-						"description": "Logs properties not found."
-					},
-					{
-						"value": "ModelRankingError",
-						"description": "Error while ranking actions using model. Please verify the learning settings are valid."
-					},
-					{
-						"value": "InternalServerError",
-						"description": "A generic error has occurred on the server."
-					},
-					{
-						"value": "RankNullResponse",
-						"description": "Rank call returned null response."
-					},
-					{
-						"value": "UpdateConfigurationFailed",
-						"description": "Failed to update configuration."
-					},
-					{
-						"value": "ModelResetFailed",
-						"description": "Model reset failed."
-					},
-					{
-						"value": "ModelPublishFailed",
-						"description": "Model publish failed."
-					},
-					{
-						"value": "ModelMetadataUpdateFailed",
-						"description": "Model metadata update failed."
-					},
-					{
-						"value": "KeyVaultNotFound",
-						"description": "Key vault not found."
-					},
-					{
-						"value": "None",
-						"description": "None"
-					}
-				]
-			}
-		},
-		"InternalError": {
-			"description": "An object containing more specific information than the parent object about the error.",
-			"type": "object",
-			"properties": {
-				"code": {
-					"description": "Detailed error code.",
-					"type": "string"
-				},
-				"innererror": {
-					"$ref": "#/definitions/InternalError"
-				}
-			}
-		},
-		"PersonalizerError": {
-			"description": "The error object.",
-			"required": [
-				"code",
-				"message"
-			],
-			"type": "object",
-			"properties": {
-				"code": {
-					"$ref": "#/definitions/PersonalizerErrorCode"
-				},
-				"message": {
-					"description": "A message explaining the error reported by the service.",
-					"type": "string"
-				},
-				"target": {
-					"description": "Error source element.",
-					"type": "string"
-				},
-				"details": {
-					"description": "An array of details about specific errors that led to this reported error.",
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/PersonalizerError"
-					}
-				},
-				"innerError": {
-					"$ref": "#/definitions/InternalError"
-				}
-			}
-		},
-		"ErrorResponse": {
-			"description": "Used to return an error to the client",
-			"required": [
-				"error"
-			],
-			"type": "object",
-			"properties": {
-				"error": {
-					"$ref": "#/definitions/PersonalizerError"
-				}
-			}
-		},
-		"PolicyContract": {
-			"description": "Learning settings specifying how to train the model.",
-			"required": [
-				"arguments",
-				"name"
-			],
-			"type": "object",
-			"properties": {
-				"name": {
-					"description": "Name of the learning settings.",
-					"maxLength": 256,
-					"type": "string"
-				},
-				"arguments": {
-					"description": "Arguments of the learning settings.",
-					"maxLength": 1024,
-					"type": "string"
-				}
-			}
-		},
-		"EvaluationJobStatus": {
-			"enum": [
-				"completed",
-				"pending",
-				"failed",
-				"notSubmitted",
-				"timeout"
-			],
-			"type": "string",
-			"x-ms-enum": {
-				"name": "EvaluationJobStatus",
-				"modelAsString": true
-			}
-		},
-		"PolicyResultSummary": {
-			"type": "object",
-			"properties": {
-				"timeStamp": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				},
-				"ipsEstimatorNumerator": {
-					"format": "float",
-					"type": "number",
-					"readOnly": true
-				},
-				"ipsEstimatorDenominator": {
-					"format": "float",
-					"type": "number",
-					"readOnly": true
-				},
-				"snipsEstimatorDenominator": {
-					"format": "float",
-					"type": "number",
-					"readOnly": true
-				},
-				"aggregateTimeWindow": {
-					"format": "duration",
-					"type": "string",
-					"readOnly": true
-				},
-				"nonZeroProbability": {
-					"format": "float",
-					"type": "number"
-				},
-				"confidenceInterval": {
-					"format": "float",
-					"type": "number",
-					"readOnly": true
-				},
-				"sumOfSquares": {
-					"format": "float",
-					"type": "number",
-					"readOnly": true
-				}
-			}
-		},
-		"PolicyResult": {
-			"type": "object",
-			"properties": {
-				"name": {
-					"type": "string",
-					"readOnly": true
-				},
-				"arguments": {
-					"type": "string",
-					"readOnly": true
-				},
-				"summary": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/PolicyResultSummary"
-					},
-					"readOnly": true
-				},
-				"totalSummary": {
-					"allOf": [
-						{
-							"$ref": "#/definitions/PolicyResultSummary"
-						}
-					],
-					"readOnly": true
-				}
-			}
-		},
-		"Evaluation": {
-			"type": "object",
-			"properties": {
-				"id": {
-					"maxLength": 256,
-					"type": "string",
-					"readOnly": true
-				},
-				"name": {
-					"maxLength": 256,
-					"type": "string",
-					"readOnly": true
-				},
-				"startTime": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				},
-				"endTime": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				},
-				"jobId": {
-					"type": "string",
-					"readOnly": true
-				},
-				"status": {
-					"allOf": [
-						{
-							"$ref": "#/definitions/EvaluationJobStatus"
-						}
-					],
-					"readOnly": true
-				},
-				"policyResults": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/PolicyResult"
-					}
-				},
-				"featureImportance": {
-					"type": "array",
-					"items": {
-						"type": "array",
-						"items": {
-							"type": "string"
-						}
-					}
-				}
-			}
-		},
-		"EvaluationContract": {
-			"description": "A counterfactual evaluation.",
-			"required": [
-				"endTime",
-				"name",
-				"policies",
-				"startTime"
-			],
-			"type": "object",
-			"properties": {
-				"enableOfflineExperimentation": {
-					"description": "True if the evaluation should explore for a more optimal learning settings.",
-					"type": "boolean"
-				},
-				"name": {
-					"description": "The name of the evaluation.",
-					"maxLength": 256,
-					"type": "string"
-				},
-				"startTime": {
-					"format": "date-time",
-					"description": "The start time of the evaluation.",
-					"type": "string"
-				},
-				"endTime": {
-					"format": "date-time",
-					"description": "The end time of the evaluation.",
-					"type": "string"
-				},
-				"policies": {
-					"description": "Additional learning settings to evaluate.",
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/PolicyContract"
-					}
-				}
-			}
-		},
-		"RewardRequest": {
-			"description": "Reward given to a rank response.",
-			"required": [
-				"value"
-			],
-			"type": "object",
-			"properties": {
-				"value": {
-					"format": "float",
-					"description": "Reward to be assigned to an action. Value should be between -1 and 1 inclusive.",
-					"type": "number"
-				}
-			}
-		},
-		"DateRange": {
-			"type": "object",
-			"properties": {
-				"from": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				},
-				"to": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				}
-			}
-		},
-		"LogsProperties": {
-			"type": "object",
-			"properties": {
-				"dateRange": {
-					"allOf": [
-						{
-							"$ref": "#/definitions/DateRange"
-						}
-					],
-					"readOnly": true
-				}
-			}
-		},
-		"Stream": {
-			"type": "object",
-			"properties": {
-				"canRead": {
-					"type": "boolean",
-					"readOnly": true
-				},
-				"canSeek": {
-					"type": "boolean",
-					"readOnly": true
-				},
-				"canTimeout": {
-					"type": "boolean",
-					"readOnly": true
-				},
-				"canWrite": {
-					"type": "boolean",
-					"readOnly": true
-				},
-				"length": {
-					"format": "int64",
-					"type": "integer",
-					"readOnly": true
-				},
-				"position": {
-					"format": "int64",
-					"type": "integer"
-				},
-				"readTimeout": {
-					"format": "int32",
-					"type": "integer"
-				},
-				"writeTimeout": {
-					"format": "int32",
-					"type": "integer"
-				}
-			}
-		},
-		"ModelProperties": {
-			"type": "object",
-			"properties": {
-				"creationTime": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				},
-				"lastModifiedTime": {
-					"format": "date-time",
-					"type": "string",
-					"readOnly": true
-				}
-			}
-		},
-		"ModelMetadata": {
-			"required": [
-				"creationDate",
-				"firstEventId",
-				"lastConfigEditDate",
-				"lastEventId",
-				"modelId",
-				"numberOfEventsLearnedSinceLastExport",
-				"savedInHistory",
-				"userDescription"
-			],
-			"type": "object",
-			"properties": {
-				"modelId": {
-					"type": "string"
-				},
-				"userDescription": {
-					"type": "string"
-				},
-				"creationDate": {
-					"format": "date-time",
-					"type": "string"
-				},
-				"lastConfigEditDate": {
-					"format": "date-time",
-					"type": "string"
-				},
-				"firstEventId": {
-					"type": "string"
-				},
-				"lastEventId": {
-					"type": "string"
-				},
-				"savedInHistory": {
-					"type": "boolean"
-				},
-				"numberOfEventsLearnedSinceLastExport": {
-					"format": "int32",
-					"type": "integer"
-				}
-			}
-		},
-		"RankableAction": {
-			"description": "An action with it's associated features used for ranking.",
-			"required": [
-				"features",
-				"id"
-			],
-			"type": "object",
-			"properties": {
-				"id": {
-					"description": "Id of the action.",
-					"maxLength": 256,
-					"minLength": 1,
-					"type": "string"
-				},
-				"features": {
-					"description": "List of dictionaries containing features.",
-					"type": "array",
-					"items": {
-						"type": "object"
-					}
-				}
-			}
-		},
-		"RankRequest": {
-			"description": "Request a set of actions to be ranked by the Personalizer service.",
-			"required": [
-				"actions"
-			],
-			"type": "object",
-			"properties": {
-				"contextFeatures": {
-					"description": "Features of the context used for Personalizer as a\r\ndictionary of dictionaries. This depends on the application, and\r\ntypically includes features about the current user, their\r\ndevice, profile information, aggregated data about time and date, etc.\r\nFeatures should not include personally identifiable information (PII),\r\nunique UserIDs, or precise timestamps.",
-					"type": "array",
-					"items": {
-						"type": "object"
-					}
-				},
-				"actions": {
-					"description": "The set of actions the Personalizer service can pick from.\r\nThe set should not contain more than 50 actions.\r\nThe order of the actions does not affect the rank result but the order\r\nshould match the sequence your application would have used to display them.\r\nThe first item in the array will be used as Baseline item in Offline evaluations.",
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/RankableAction"
-					}
-				},
-				"excludedActions": {
-					"description": "The set of action ids to exclude from ranking.",
-					"type": "array",
-					"items": {
-						"type": "string"
-					}
-				},
-				"eventId": {
-					"description": "Optionally pass an eventId that uniquely identifies this Rank event.\r\nIf null, the service generates a unique eventId. The eventId will be used for\r\nassociating this request with its reward, as well as seeding the pseudo-random\r\ngenerator when making a Personalizer call.",
-					"maxLength": 256,
-					"type": "string"
-				},
-				"deferActivation": {
-					"description": "Send false if it is certain the rewardActionId in rank results will be shown to the user, therefore\r\nPersonalizer will expect a Reward call, otherwise it will assign the default\r\nReward to the event. Send true if it is possible the user will not see the\r\naction specified in the rank results, because the page is rendering later, or the Rank results may be\r\noverridden by code further downstream.",
-					"default": false,
-					"type": "boolean"
-				}
-			}
-		},
-		"RankedAction": {
-			"description": "A ranked action with its resulting probability.",
-			"type": "object",
-			"properties": {
-				"id": {
-					"description": "Id of the action",
-					"maxLength": 256,
-					"type": "string",
-					"readOnly": true
-				},
-				"probability": {
-					"format": "float",
-					"description": "Probability of the action",
-					"maximum": 1,
-					"minimum": 0,
-					"type": "number",
-					"readOnly": true
-				}
-			}
-		},
-		"RankResponse": {
-			"description": "Returns which action to use as rewardActionId, and additional information about each action as a result of a Rank request.",
-			"type": "object",
-			"properties": {
-				"ranking": {
-					"description": "The calculated ranking for the current request.",
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/RankedAction"
-					},
-					"readOnly": true
-				},
-				"eventId": {
-					"description": "The eventId for the round trip from request to response.",
-					"maxLength": 256,
-					"type": "string",
-					"readOnly": true
-				},
-				"rewardActionId": {
-					"description": "The action chosen by the Personalizer service. This is the action your application should display, and for which to report the reward. This might not be the\r\nfirst found in 'ranking' if an action in the request in first position was part of the excluded ids.",
-					"maxLength": 256,
-					"type": "string",
-					"readOnly": true
-				}
-			}
-		},
-		"ContainerStatus": {
-			"type": "object",
-			"properties": {
-				"service": {
-					"type": "string"
-				},
-				"apiStatus": {
-					"type": "string"
-				},
-				"apiStatusMessage": {
-					"type": "string"
-				}
-			}
-		}
-	},
-	"parameters": {
-		"Endpoint": {
-			"in": "path",
-			"name": "Endpoint",
-			"description": "Supported Cognitive Services endpoint.",
-			"required": true,
-			"Type": "string",
-			"x-ms-parameter-location": "client",
-			"x-ms-skip-url-encoding": true
-		}
-	},
-	"securityDefinitions": {
-		"apim_key": {
-			"type": "apiKey",
-			"name": "Ocp-Apim-Subscription-Key",
-			"in": "header"
-		}
-	},
-	"security": [
-		{}
-	],
-	"tags": [
-		{
-			"name": "Configurations",
-			"description": "Manages configuration operations."
-		},
-		{
-			"name": "Evaluations",
-			"description": "Manages counterfactual evaluation operations."
-		},
-		{
-			"name": "Events",
-			"description": "Manages event operations."
-		},
-		{
-			"name": "Logs",
-			"description": "Manages reinforcement learning logs."
-		},
-		{
-			"name": "Metrics",
-			"description": "Manages performance metrics for different learning modes."
-		},
-		{
-			"name": "Model",
-			"description": "Manages reinforcement learning configuration operations."
-		},
-		{
-			"name": "Rank",
-			"description": "Manages ranking operations."
-		}
-	],
-	"x-ms-parameterized-host": {
-		"hostTemplate": "{Endpoint}",
-		"useSchemePrefix": false,
-		"parameters": [
-			{
-				"$ref": "#/parameters/Endpoint"
-			}
-		]
-	}
+  "swagger": "2.0",
+  "info": {
+    "title": "Personalizer Client",
+    "description": "Personalizer Service is an Azure Cognitive Service that makes it easy to target content and experiences without complex pre-analysis or cleanup of past data. Given a context and featurized content, the Personalizer Service returns which content item to show to users in rewardActionId. As rewards are sent in response to the use of rewardActionId, the reinforcement learning algorithm will improve the model and improve performance of future rank calls.",
+    "version": "v1.0"
+  },
+  "host": "localhost:5001",
+  "basePath": "/personalizer/v1.0",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/configurations/service": {
+      "put": {
+        "tags": [
+          "Configurations"
+        ],
+        "summary": "Update Service Configuration.",
+        "description": "Update the Personalizer service configuration.",
+        "operationId": "ServiceConfiguration_Update",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The personalizer service configuration.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ServiceConfiguration"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceConfiguration"
+            }
+          },
+          "default": {
+            "description": "Invalid service configuration.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful ServiceConfiguration_Update request": {
+            "$ref": "./examples/ServiceConfiguration_Update.json"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Configurations"
+        ],
+        "summary": "Get Service Configuration.",
+        "description": "Get the Personalizer service configuration.",
+        "operationId": "ServiceConfiguration_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ServiceConfiguration"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful ServiceConfiguration_Get request": {
+            "$ref": "./examples/ServiceConfiguration_Get.json"
+          }
+        }
+      }
+    },
+    "/configurations/policy": {
+      "get": {
+        "tags": [
+          "Configurations"
+        ],
+        "summary": "Get Policy.",
+        "description": "Get the learning settings currently used by the Personalizer service.",
+        "operationId": "Policy_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PolicyContract"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Policy_Get request": {
+            "$ref": "./examples/Policy_Get.json"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Configurations"
+        ],
+        "summary": "Update Policy.",
+        "description": "Update the learning settings that the Personalizer service will use to train models.",
+        "operationId": "Policy_Update",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The learning settings.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PolicyContract"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PolicyContract"
+            }
+          },
+          "default": {
+            "description": "Invalid policy configuration.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Policy_Update request": {
+            "$ref": "./examples/Policy_Update.json"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Configurations"
+        ],
+        "summary": "Reset Policy.",
+        "description": "Resets the learning settings of the Personalizer service to default.",
+        "operationId": "Policy_Reset",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PolicyContract"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Policy_Reset request": {
+            "$ref": "./examples/Policy_Reset.json"
+          }
+        }
+      }
+    },
+    "/evaluations/{evaluationId}": {
+      "delete": {
+        "tags": [
+          "Evaluations"
+        ],
+        "summary": "Delete Evaluation.",
+        "description": "Delete the evaluation associated with the Id.",
+        "operationId": "Evaluations_Delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evaluationId",
+            "description": "Id of the evaluation to delete.",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        },
+        "x-ms-examples": {
+          "Successful Evaluations_Delete request": {
+            "$ref": "./examples/Evaluations_Delete.json"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Evaluations"
+        ],
+        "summary": "Get Evaluation.",
+        "description": "Get the evaluation associated with the Id.",
+        "operationId": "Evaluations_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "evaluationId",
+            "description": "Id of the evaluation.",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Evaluation"
+            }
+          },
+          "default": {
+            "description": "Evaluation not found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Evaluations_Get request": {
+            "$ref": "./examples/Evaluations_Get.json"
+          }
+        }
+      }
+    },
+    "/evaluations": {
+      "get": {
+        "tags": [
+          "Evaluations"
+        ],
+        "summary": "List Evaluations.",
+        "description": "List all the submitted evaluations.",
+        "operationId": "Evaluations_List",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Evaluation"
+              }
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Evaluations_List request": {
+            "$ref": "./examples/Evaluations_List.json"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Evaluations"
+        ],
+        "summary": "Create Evaluation.",
+        "description": "Submit a new evaluation job.",
+        "operationId": "Evaluations_Create",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The evaluation job definition.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EvaluationContract"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Evaluation"
+            },
+            "headers": {
+              "Location": {
+                "description": "Location of the evaluation resource",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Invalid evaluation contract.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Evaluations_Create request": {
+            "$ref": "./examples/Evaluations_Create.json"
+          }
+        }
+      }
+    },
+    "/events/{eventId}/reward": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Post Reward.",
+        "description": "Report reward that resulted from using the action specified in rewardActionId for the specified event.",
+        "operationId": "Events_Reward",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "eventId",
+            "description": "The event id this reward applies to.",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The reward should be a floating point number, typically between 0 and 1.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RewardRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Invalid reward request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Events_Reward request": {
+            "$ref": "./examples/Events_Reward.json"
+          }
+        }
+      }
+    },
+    "/events/{eventId}/activate": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "Activate Event.",
+        "description": "Report that the specified event was actually displayed to the user and a reward should be expected for it",
+        "operationId": "Events_Activate",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "eventId",
+            "description": "The event ID this activation applies to.",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Invalid activate event request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Events_Activate request": {
+            "$ref": "./examples/Events_Activate.json"
+          }
+        }
+      }
+    },
+    "/logs": {
+      "delete": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Deletes Logs.",
+        "description": "Delete all generated logs.",
+        "operationId": "Log_Delete",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        },
+        "x-ms-examples": {
+          "Successful Log_Delete request": {
+            "$ref": "./examples/Log_Delete.json"
+          }
+        }
+      }
+    },
+    "/logs/properties": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Get Log Properties.",
+        "description": "Get properties of generated logs.",
+        "operationId": "Log_GetProperties",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LogsProperties"
+            }
+          },
+          "default": {
+            "description": "Logs properties not found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Log_GetProperties request": {
+            "$ref": "./examples/Log_GetProperties.json"
+          }
+        }
+      }
+    },
+    "/metrics/apprentice": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get apprentice mode metrics.",
+        "description": "Get performance metrics for apprentice learning mode.",
+        "operationId": "ApprenticeModeMetrics_Get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ApprenticeModeMetrics"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful ApprenticeModeMetrics_Get request": {
+            "$ref": "./examples/ApprenticeModeMetrics_Get.json"
+          }
+        }
+      }
+    },
+    "/model": {
+      "get": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Get Model.",
+        "description": "Get the model file generated by Personalizer service.",
+        "operationId": "Model_Get",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": null,
+            "schema": {
+              "type": "file"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Model_Get request": {
+            "$ref": "./examples/Model_Get.json"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Reset Model.",
+        "description": "Resets the model file generated by Personalizer service.",
+        "operationId": "Model_Reset",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Model reset failed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Model_Reset request": {
+            "$ref": "./examples/Model_Reset.json"
+          }
+        }
+      }
+    },
+    "/model/properties": {
+      "get": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Get Model Properties.",
+        "description": "Get properties of the model file generated by Personalizer service.",
+        "operationId": "Model_GetProperties",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ModelProperties"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Model_GetProperties request": {
+            "$ref": "./examples/Model_GetProperties.json"
+          }
+        }
+      }
+    },
+    "/staged-model": {
+      "get": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "List Staged Models",
+        "description": "List staged models generated by Personalizer service.",
+        "operationId": "StagedModel_List",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ModelMetadata"
+              }
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful StagedModel_List request": {
+            "$ref": "./examples/StagedModel_List.json"
+          }
+        }
+      }
+    },
+    "/staged-model/{id}": {
+      "get": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Get Staged Model",
+        "description": "Get the staged model file generated by Personalizer service, given a model id.",
+        "operationId": "StagedModel_GetById",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": null,
+            "schema": {
+              "type": "file"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful StagedModel_GetById request": {
+            "$ref": "./examples/StagedModel_GetById.json"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Reset Staged Model",
+        "description": "Reset the staged model file generated by Personalizer service, given a model id.",
+        "operationId": "StagedModel_ResetById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Model reset failed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful StagedModel_ResetById request": {
+            "$ref": "./examples/StagedModel_ResetById.json"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Update Staged Model",
+        "description": "Update the metadata of a staged model, given a model id.\r\nOnly the boolean `savedInHistory` and the string `userDescription` can be updated. Other fields are readonly.",
+        "operationId": "StagedModel_UpdateMetadataById",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModelMetadata"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ModelMetadata"
+            }
+          },
+          "default": {
+            "description": "Invalid model metadata.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful StagedModel_UpdateMetadataById request": {
+            "$ref": "./examples/StagedModel_UpdateMetadataById.json"
+          }
+        }
+      }
+    },
+    "/staged-model/{id}/publish": {
+      "put": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "Publish Staged Model",
+        "description": "Publish the staged model file generated by Personalizer service, given a model id.",
+        "operationId": "StagedModel_Publish",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "maxLength": 256
+          },
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Model publish failed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful StagedModel_Publish request": {
+            "$ref": "./examples/StagedModel_Publish.json"
+          }
+        }
+      }
+    },
+    "/rank": {
+      "post": {
+        "tags": [
+          "Rank"
+        ],
+        "summary": "Post Rank.",
+        "description": "Submit a Personalizer rank request, to get which of the provided actions should be used in the provided context.",
+        "operationId": "Rank",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Ocp-Apim-Subscription-Key",
+            "description": "apim-subscription-id header value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "A Personalizer request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RankRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RankResponse"
+            }
+          },
+          "default": {
+            "description": "Invalid rank request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Successful Rank request": {
+            "$ref": "./examples/Rank.json"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "LearningMode": {
+      "enum": [
+        "Online",
+        "Apprentice",
+        "LoggingOnly"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "LearningMode",
+        "modelAsString": true
+      }
+    },
+    "ApprenticeLearningMetrics": {
+      "required": [
+        "numberOfEvents",
+        "numberOfImitatedEvents",
+        "sumOfImitatedRewards",
+        "sumOfRewards"
+      ],
+      "type": "object",
+      "properties": {
+        "numberOfEvents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "sumOfRewards": {
+          "format": "float",
+          "type": "number"
+        },
+        "numberOfImitatedEvents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "sumOfImitatedRewards": {
+          "format": "float",
+          "type": "number"
+        }
+      }
+    },
+    "ApprenticeModeMetrics": {
+      "required": [
+        "lastProcessedEventTime",
+        "numberOfEvents",
+        "numberOfImitatedEvents",
+        "startTime",
+        "sumOfImitatedRewards",
+        "sumOfRewards"
+      ],
+      "type": "object",
+      "properties": {
+        "startTime": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "lastProcessedEventTime": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "lastBatchMetrics": {
+          "$ref": "#/definitions/ApprenticeLearningMetrics"
+        },
+        "numberOfEvents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "sumOfRewards": {
+          "format": "float",
+          "type": "number"
+        },
+        "numberOfImitatedEvents": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "sumOfImitatedRewards": {
+          "format": "float",
+          "type": "number"
+        }
+      }
+    },
+    "ServiceConfiguration": {
+      "description": "The configuration of the service.",
+      "required": [
+        "defaultReward",
+        "explorationPercentage",
+        "logRetentionDays",
+        "modelExportFrequency",
+        "rewardAggregation",
+        "rewardWaitTime"
+      ],
+      "type": "object",
+      "properties": {
+        "rewardWaitTime": {
+          "format": "duration",
+          "description": "The time span waited until a request is marked with the default reward.\r\nFor example, PT5M (5 mins). For information about the time format,\r\nsee http://en.wikipedia.org/wiki/ISO_8601#Durations",
+          "type": "string"
+        },
+        "defaultReward": {
+          "format": "float",
+          "description": "The reward given if a reward is not received within the specified wait time.",
+          "maximum": 1,
+          "minimum": -1,
+          "type": "number"
+        },
+        "rewardAggregation": {
+          "description": "The function used to process rewards, if multiple reward scores are received before rewardWaitTime is over.",
+          "maxLength": 256,
+          "type": "string"
+        },
+        "explorationPercentage": {
+          "format": "float",
+          "description": "The percentage of rank responses that will use exploration.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "modelExportFrequency": {
+          "format": "duration",
+          "description": "Personalizer will start using the most updated trained model for online ranks automatically every specified time period.\r\nFor example, PT5M (5 mins). For information about the time format,\r\nsee http://en.wikipedia.org/wiki/ISO_8601#Durations",
+          "type": "string"
+        },
+        "logMirrorEnabled": {
+          "description": "Flag indicates whether log mirroring is enabled.",
+          "type": "boolean"
+        },
+        "logMirrorSasUri": {
+          "description": "Azure storage account container SAS URI for log mirroring.",
+          "type": "string"
+        },
+        "logRetentionDays": {
+          "format": "int32",
+          "description": "Number of days historical logs are to be maintained. -1 implies the logs will never be deleted.",
+          "maximum": 2147483647,
+          "minimum": -1,
+          "type": "integer"
+        },
+        "modelAutoPublish": {
+          "description": "When auto-publish is enabled (= default), the trainer exports the model and override the \"current\" model.\r\nWhen auto-publish is disabled, the trainer exports models but does not override the \"current\" model (this is done by the user through API calls).",
+          "default": true,
+          "type": "boolean"
+        },
+        "stagedModelHistoryLength": {
+          "format": "int32",
+          "description": "Old models are automatically cleaned except the last N models",
+          "default": 10,
+          "type": "integer"
+        },
+        "lastConfigurationEditDate": {
+          "format": "date-time",
+          "description": "Last time model training configuration was updated",
+          "type": "string"
+        },
+        "learningMode": {
+          "$ref": "#/definitions/LearningMode"
+        },
+        "latestApprenticeModeMetrics": {
+          "$ref": "#/definitions/ApprenticeModeMetrics"
+        }
+      }
+    },
+    "PersonalizerErrorCode": {
+      "enum": [
+        "badRequest",
+        "invalidServiceConfiguration",
+        "invalidLearningModeServiceConfiguration",
+        "invalidPolicyConfiguration",
+        "invalidPolicyContract",
+        "invalidEvaluationContract",
+        "duplicateCustomPolicyNames",
+        "noLogsExistInDateRange",
+        "logsSizeExceedAllowedLimit",
+        "invalidRewardRequest",
+        "invalidEventIdToActivate",
+        "invalidRankRequest",
+        "invalidExportLogsRequest",
+        "invalidContainer",
+        "invalidModelMetadata",
+        "apprenticeModeNeverTurnedOn",
+        "missingAppId",
+        "modelFileAccessDenied",
+        "resourceNotFound",
+        "frontEndNotFound",
+        "evaluationNotFound",
+        "logsPropertiesNotFound",
+        "modelRankingError",
+        "internalServerError",
+        "rankNullResponse",
+        "updateConfigurationFailed",
+        "modelResetFailed",
+        "modelPublishFailed",
+        "modelMetadataUpdateFailed",
+        "keyVaultNotFound",
+        "none"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "PersonalizerErrorCode",
+        "modelAsString": true,
+        "values": [
+          {
+            "value": "BadRequest",
+            "description": "Request could not be understood by the server."
+          },
+          {
+            "value": "InvalidServiceConfiguration",
+            "description": "Invalid service configuration."
+          },
+          {
+            "value": "InvalidLearningModeServiceConfiguration",
+            "description": "Updating defaultReward, rewardWaitTime and rewardAggregation when changing learning mode from Online to Apprentice mode and vice versa is not allowed."
+          },
+          {
+            "value": "InvalidPolicyConfiguration",
+            "description": "Invalid policy configuration."
+          },
+          {
+            "value": "InvalidPolicyContract",
+            "description": "Invalid policy contract."
+          },
+          {
+            "value": "InvalidEvaluationContract",
+            "description": "Invalid evaluation contract."
+          },
+          {
+            "value": "DuplicateCustomPolicyNames",
+            "description": "Custom policy names should be unique."
+          },
+          {
+            "value": "NoLogsExistInDateRange",
+            "description": "No logs exist in date range."
+          },
+          {
+            "value": "LogsSizeExceedAllowedLimit",
+            "description": "Total size of logs exceed allowed limit."
+          },
+          {
+            "value": "InvalidRewardRequest",
+            "description": "Invalid reward request."
+          },
+          {
+            "value": "InvalidEventIdToActivate",
+            "description": "Invalid activate event request."
+          },
+          {
+            "value": "InvalidRankRequest",
+            "description": "Invalid rank request."
+          },
+          {
+            "value": "InvalidExportLogsRequest",
+            "description": "Invalid export logs request."
+          },
+          {
+            "value": "InvalidContainer",
+            "description": "SAS Uri must be the Uri to a container that has write permissions."
+          },
+          {
+            "value": "InvalidModelMetadata",
+            "description": "Invalid model metadata."
+          },
+          {
+            "value": "ApprenticeModeNeverTurnedOn",
+            "description": "Apprentice mode never turned on."
+          },
+          {
+            "value": "MissingAppId",
+            "description": "AppId is missing in the header."
+          },
+          {
+            "value": "ModelFileAccessDenied",
+            "description": "Key vault Key used for customer managed key cannot be accessed."
+          },
+          {
+            "value": "ResourceNotFound",
+            "description": "Requested resource does not exist on the server."
+          },
+          {
+            "value": "FrontEndNotFound",
+            "description": "Front end not found."
+          },
+          {
+            "value": "EvaluationNotFound",
+            "description": "Evaluation not found."
+          },
+          {
+            "value": "LogsPropertiesNotFound",
+            "description": "Logs properties not found."
+          },
+          {
+            "value": "ModelRankingError",
+            "description": "Error while ranking actions using model. Please verify the learning settings are valid."
+          },
+          {
+            "value": "InternalServerError",
+            "description": "A generic error has occurred on the server."
+          },
+          {
+            "value": "RankNullResponse",
+            "description": "Rank call returned null response."
+          },
+          {
+            "value": "UpdateConfigurationFailed",
+            "description": "Failed to update configuration."
+          },
+          {
+            "value": "ModelResetFailed",
+            "description": "Model reset failed."
+          },
+          {
+            "value": "ModelPublishFailed",
+            "description": "Model publish failed."
+          },
+          {
+            "value": "ModelMetadataUpdateFailed",
+            "description": "Model metadata update failed."
+          },
+          {
+            "value": "KeyVaultNotFound",
+            "description": "Key vault not found."
+          },
+          {
+            "value": "None",
+            "description": "None"
+          }
+        ]
+      }
+    },
+    "InternalError": {
+      "description": "An object containing more specific information than the parent object about the error.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Detailed error code.",
+          "type": "string"
+        },
+        "innererror": {
+          "$ref": "#/definitions/InternalError"
+        }
+      }
+    },
+    "PersonalizerError": {
+      "description": "The error object.",
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/PersonalizerErrorCode"
+        },
+        "message": {
+          "description": "A message explaining the error reported by the service.",
+          "type": "string"
+        },
+        "target": {
+          "description": "Error source element.",
+          "type": "string"
+        },
+        "details": {
+          "description": "An array of details about specific errors that led to this reported error.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersonalizerError"
+          }
+        },
+        "innerError": {
+          "$ref": "#/definitions/InternalError"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "description": "Used to return an error to the client",
+      "required": [
+        "error"
+      ],
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/PersonalizerError"
+        }
+      }
+    },
+    "PolicyContract": {
+      "description": "Learning settings specifying how to train the model.",
+      "required": [
+        "arguments",
+        "name"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the learning settings.",
+          "maxLength": 256,
+          "type": "string"
+        },
+        "arguments": {
+          "description": "Arguments of the learning settings.",
+          "maxLength": 1024,
+          "type": "string"
+        }
+      }
+    },
+    "EvaluationJobStatus": {
+      "enum": [
+        "completed",
+        "pending",
+        "failed",
+        "notSubmitted",
+        "timeout"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "EvaluationJobStatus",
+        "modelAsString": true
+      }
+    },
+    "PolicyResultSummary": {
+      "type": "object",
+      "properties": {
+        "timeStamp": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "ipsEstimatorNumerator": {
+          "format": "float",
+          "type": "number",
+          "readOnly": true
+        },
+        "ipsEstimatorDenominator": {
+          "format": "float",
+          "type": "number",
+          "readOnly": true
+        },
+        "snipsEstimatorDenominator": {
+          "format": "float",
+          "type": "number",
+          "readOnly": true
+        },
+        "aggregateTimeWindow": {
+          "format": "duration",
+          "type": "string",
+          "readOnly": true
+        },
+        "nonZeroProbability": {
+          "format": "float",
+          "type": "number"
+        },
+        "confidenceInterval": {
+          "format": "float",
+          "type": "number",
+          "readOnly": true
+        },
+        "sumOfSquares": {
+          "format": "float",
+          "type": "number",
+          "readOnly": true
+        }
+      }
+    },
+    "PolicyResult": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "readOnly": true
+        },
+        "arguments": {
+          "type": "string",
+          "readOnly": true
+        },
+        "summary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PolicyResultSummary"
+          },
+          "readOnly": true
+        },
+        "totalSummary": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/PolicyResultSummary"
+            }
+          ],
+          "readOnly": true
+        }
+      }
+    },
+    "Evaluation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "maxLength": 256,
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "maxLength": 256,
+          "type": "string",
+          "readOnly": true
+        },
+        "startTime": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "endTime": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "jobId": {
+          "type": "string",
+          "readOnly": true
+        },
+        "status": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/EvaluationJobStatus"
+            }
+          ],
+          "readOnly": true
+        },
+        "policyResults": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PolicyResult"
+          }
+        },
+        "featureImportance": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "EvaluationContract": {
+      "description": "A counterfactual evaluation.",
+      "required": [
+        "endTime",
+        "name",
+        "policies",
+        "startTime"
+      ],
+      "type": "object",
+      "properties": {
+        "enableOfflineExperimentation": {
+          "description": "True if the evaluation should explore for a more optimal learning settings.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "The name of the evaluation.",
+          "maxLength": 256,
+          "type": "string"
+        },
+        "startTime": {
+          "format": "date-time",
+          "description": "The start time of the evaluation.",
+          "type": "string"
+        },
+        "endTime": {
+          "format": "date-time",
+          "description": "The end time of the evaluation.",
+          "type": "string"
+        },
+        "policies": {
+          "description": "Additional learning settings to evaluate.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PolicyContract"
+          }
+        }
+      }
+    },
+    "RewardRequest": {
+      "description": "Reward given to a rank response.",
+      "required": [
+        "value"
+      ],
+      "type": "object",
+      "properties": {
+        "value": {
+          "format": "float",
+          "description": "Reward to be assigned to an action. Value should be between -1 and 1 inclusive.",
+          "type": "number"
+        }
+      }
+    },
+    "DateRange": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "to": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "LogsProperties": {
+      "type": "object",
+      "properties": {
+        "dateRange": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateRange"
+            }
+          ],
+          "readOnly": true
+        }
+      }
+    },
+    "ModelProperties": {
+      "type": "object",
+      "properties": {
+        "creationTime": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        },
+        "lastModifiedTime": {
+          "format": "date-time",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "ModelMetadata": {
+      "required": [
+        "creationDate",
+        "firstEventId",
+        "lastConfigEditDate",
+        "lastEventId",
+        "modelId",
+        "numberOfEventsLearnedSinceLastExport",
+        "savedInHistory",
+        "userDescription"
+      ],
+      "type": "object",
+      "properties": {
+        "modelId": {
+          "type": "string"
+        },
+        "userDescription": {
+          "type": "string"
+        },
+        "creationDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "lastConfigEditDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "firstEventId": {
+          "type": "string"
+        },
+        "lastEventId": {
+          "type": "string"
+        },
+        "savedInHistory": {
+          "type": "boolean"
+        },
+        "numberOfEventsLearnedSinceLastExport": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "RankableAction": {
+      "description": "An action with it\u0027s associated features used for ranking.",
+      "required": [
+        "features",
+        "id"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Id of the action.",
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "features": {
+          "description": "List of dictionaries containing features.",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "RankRequest": {
+      "description": "Request a set of actions to be ranked by the Personalizer service.",
+      "required": [
+        "actions"
+      ],
+      "type": "object",
+      "properties": {
+        "contextFeatures": {
+          "description": "Features of the context used for Personalizer as a\r\ndictionary of dictionaries. This depends on the application, and\r\ntypically includes features about the current user, their\r\ndevice, profile information, aggregated data about time and date, etc.\r\nFeatures should not include personally identifiable information (PII),\r\nunique UserIDs, or precise timestamps.",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "actions": {
+          "description": "The set of actions the Personalizer service can pick from.\r\nThe set should not contain more than 50 actions.\r\nThe order of the actions does not affect the rank result but the order\r\nshould match the sequence your application would have used to display them.\r\nThe first item in the array will be used as Baseline item in Offline evaluations.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RankableAction"
+          }
+        },
+        "excludedActions": {
+          "description": "The set of action ids to exclude from ranking.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "eventId": {
+          "description": "Optionally pass an eventId that uniquely identifies this Rank event.\r\nIf null, the service generates a unique eventId. The eventId will be used for\r\nassociating this request with its reward, as well as seeding the pseudo-random\r\ngenerator when making a Personalizer call.",
+          "maxLength": 256,
+          "type": "string"
+        },
+        "deferActivation": {
+          "description": "Send false if it is certain the rewardActionId in rank results will be shown to the user, therefore\r\nPersonalizer will expect a Reward call, otherwise it will assign the default\r\nReward to the event. Send true if it is possible the user will not see the\r\naction specified in the rank results, because the page is rendering later, or the Rank results may be\r\noverridden by code further downstream.",
+          "default": false,
+          "type": "boolean"
+        }
+      }
+    },
+    "RankedAction": {
+      "description": "A ranked action with its resulting probability.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Id of the action",
+          "maxLength": 256,
+          "type": "string",
+          "readOnly": true
+        },
+        "probability": {
+          "format": "float",
+          "description": "Probability of the action",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number",
+          "readOnly": true
+        }
+      }
+    },
+    "RankResponse": {
+      "description": "Returns which action to use as rewardActionId, and additional information about each action as a result of a Rank request.",
+      "type": "object",
+      "properties": {
+        "ranking": {
+          "description": "The calculated ranking for the current request.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RankedAction"
+          },
+          "readOnly": true
+        },
+        "eventId": {
+          "description": "The eventId for the round trip from request to response.",
+          "maxLength": 256,
+          "type": "string",
+          "readOnly": true
+        },
+        "rewardActionId": {
+          "description": "The action chosen by the Personalizer service. This is the action your application should display, and for which to report the reward. This might not be the\r\nfirst found in \u0027ranking\u0027 if an action in the request in first position was part of the excluded ids.",
+          "maxLength": 256,
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "ContainerStatus": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string"
+        },
+        "apiStatus": {
+          "type": "string"
+        },
+        "apiStatusMessage": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "Endpoint": {
+      "in": "path",
+      "name": "Endpoint",
+      "description": "Supported Cognitive Services endpoint.",
+      "required": true,
+      "Type": "string",
+      "x-ms-parameter-location": "client",
+      "x-ms-skip-url-encoding": true
+    }
+  },
+  "securityDefinitions": {
+    "apim_key": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      
+    }
+  ],
+  "tags": [
+    {
+      "name": "Configurations",
+      "description": "Manages configuration operations."
+    },
+    {
+      "name": "Evaluations",
+      "description": "Manages counterfactual evaluation operations."
+    },
+    {
+      "name": "Events",
+      "description": "Manages event operations."
+    },
+    {
+      "name": "Logs",
+      "description": "Manages reinforcement learning logs."
+    },
+    {
+      "name": "Metrics",
+      "description": "Manages performance metrics for different learning modes."
+    },
+    {
+      "name": "Model",
+      "description": "Manages reinforcement learning configuration operations."
+    },
+    {
+      "name": "Rank",
+      "description": "Manages ranking operations."
+    }
+  ],
+  "x-ms-parameterized-host": {
+    "hostTemplate": "{Endpoint}",
+    "useSchemePrefix": false,
+    "parameters": [
+      {
+        "$ref": "#/parameters/Endpoint"
+      }
+    ]
+  }
 }
